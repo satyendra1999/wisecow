@@ -1,0 +1,20 @@
+# Deployment configuration for the wisecow application
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wisecow-deploy   # Name of the Deployment
+spec:
+  replicas: 1            # Number of pods to run; here 1
+  selector:
+    matchLabels:
+      app: wisecow       # Selector to match pods with this label
+  template:
+    metadata:
+      labels:
+        app: wisecow     # Label assigned to pods created by this Deployment
+    spec:
+      containers:
+      - name: wisecow    # Name of the container
+        image: satyendra1999/wisecow:v2  # Docker image to use
+        ports:
+        - containerPort: 4499  # Port exposed inside the container

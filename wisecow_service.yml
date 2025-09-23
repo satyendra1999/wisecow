@@ -1,0 +1,13 @@
+# Service configuration for the wisecow application
+apiVersion: v1
+kind: Service
+metadata:
+  name: wisecow-service   # Name of the Service
+spec:
+  type: NodePort          # Type of service (NodePort allows external access)
+  selector:
+    app: wisecow          # Service targets pods with this label
+  ports:
+    - port: 4499          # Internal port of the Service
+      targetPort: 4499    # Port on the container/pod
+      nodePort: 30007     # External port to access the app from outside the cluster
