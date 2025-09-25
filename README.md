@@ -1,28 +1,78 @@
-# Cow wisdom web server
+# Wisecow on Kubernetes  
 
-## Prerequisites
+## 📝 Project Overview  
+This project demonstrates how to **containerize and deploy the Wisecow application** using Docker and Kubernetes.  
+We also automated the **CI/CD pipeline with GitHub Actions** to build and push Docker images to DockerHub whenever changes are committed.  
 
-```
-sudo apt install fortune-mod cowsay -y
-```
+---
 
-## How to use?
+## ⚙️ Prerequisites  
+Before starting, ensure the following are installed and configured:  
+- 🐳 Docker  
+- ☸️ Minikube / Kind cluster  
+- ⎈ kubectl  
+- 🌐 GitHub account  
+- 📦 DockerHub account  
 
-1. Run `./wisecow.sh`
-2. Point the browser to server port (default 4499)
+---
 
-## What to expect?
-![wisecow](https://github.com/nyrahul/wisecow/assets/9133227/8d6bfde3-4a5a-480e-8d55-3fef60300d98)
+## 🐳 Dockerization  
 
-# Problem Statement
-Deploy the wisecow application as a k8s app
+1. ## Clone the repository:  
+  Link url- git clone https://github.com/satyendra1999/wisecow.git
+  cd wisecow
 
-## Requirement
-1. Create Dockerfile for the image and corresponding k8s manifest to deploy in k8s env. The wisecow service should be exposed as k8s service.
-2. Github action for creating new image when changes are made to this repo
-3. [Challenge goal]: Enable secure TLS communication for the wisecow app.
+2. ## Build the Docker image
 
-## Expected Artifacts
-1. Github repo containing the app with corresponding dockerfile, k8s manifest, any other artifacts needed.
-2. Github repo with corresponding github action.
-3. Github repo should be kept private and the access should be enabled for following github IDs: nyrahul
+    docker build -t satyendra1999/wisecow:latest .
+    
+3. ## Push the image to DockerHub:
+    docker login:
+    docker push satyendra1999/wisecow:latest
+✅ At this point, the Wisecow app image is available on DockerHub.
+
+---
+
+4. ## 🤖 CI/CD with GitHub Actions
+    A workflow file .github/workflows/ci.yml was created.
+
+    ## This workflow automatically:
+
+     - Builds the Docker image.
+
+     - Pushes it to DockerHub whenever changes are committed to the repository.
+
+     - To verify the workflow run:
+
+     - Push any change to the repository.
+
+Check the Actions tab in GitHub → job should succeed → image updated in DockerHub.
+
+---
+
+5. ## ☸️ Kubernetes Deployment
+
+minikube start
+    ## Apply deployment manifest:
+        
+        kubectl apply -f wisecow-deployment.yml
+        kubectl apply -f wisecow-service.yml
+
+5. ## Verify pods and service:
+    kubectl get pods
+    kubectl get svc
+
+6. ##  Access the application using Minikube:
+    minikube service wisecow-service --url
+
+✅ The Wisecow application is now live on your Kubernetes cluster.
+
+*******************************************************************************************
+## ✅End Goal Achieved
+📦 Containerized the Wisecow app with Docker.
+
+🔄 Automated build & push with GitHub Actions.
+
+☸️ Deployed the application on Kubernetes with service exposure.
+
+🔐 (Challenge goals: TLS & auto-CD were optional and not implemented).
